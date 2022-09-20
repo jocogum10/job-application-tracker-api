@@ -10,7 +10,6 @@ An app that uses React JS for the front end and Ruby on Rails API for the backen
 - Ruby on Rails API
 
 # Functionality
-- Log In Using Devise
+- Log In Using Devise JWT
 - CRUD Functionality
 - Drag and Drop Kanban Board Front End
-- Nice to have: Google Authentication
