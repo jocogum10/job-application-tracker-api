@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe "get all questions route", :type => :request do
+describe "sign up for users", :type => :request do
   before do 
       post '/users' , params: {
       email: "test1@test.com",
