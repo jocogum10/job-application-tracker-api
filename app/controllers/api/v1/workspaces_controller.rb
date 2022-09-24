@@ -1,13 +1,17 @@
 class Api::V1::WorkspacesController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_workspace, only: %i[show update]
+  before_action :get_workspace, only: %i[show update destroy]
 
   def index
-    render json: current_user.workspaces
+    render json: {
+      workspace: current_user.workspaces.all,
+    }, status: :ok
   end
 
   def show
-    render json: @workspace
+    render json: {
+      workspace: @workspace
+    }, status: :ok
   end
 
   def create
@@ -15,7 +19,7 @@ class Api::V1::WorkspacesController < ApplicationController
 
     if workspace.save
       render json: {
-        workspace,
+        workspace: workspace,
         message: "Successfully created a new workspace.",
       }, status: :created
     else
@@ -27,23 +31,31 @@ class Api::V1::WorkspacesController < ApplicationController
 
   def update
     if @workspace.update(workspace_params)
-      render json: @workspace
+      render json: {
+        workspace: @workspace,
+        message: "Successfully updated the workspace."
+      }, status: :accepted
     else
       render json: {
-        message: @product.errors
+        message: @workspace.errors
       }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    render json: {
-      message: "Deleted a new workspace."
-    }, status: :ok
+    if @workspace.destroy
+      render json: {},status: :no_content
+    else
+      render json: {
+        message: @workspace.errors
+      }, status: :unprocessable_entity
+    end
   end
 
   private
 
   def get_workspace
-    @workspace = current_user.workspace.find(params[:id])
+    @workspace = current_user.workspaces.find(params[:id])
   end
 
   def workspace_params
