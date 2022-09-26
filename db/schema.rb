@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_23_115743) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_26_121717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "job_applications", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "company"
+    t.string "job_link"
+    t.string "status"
+    t.string "notes"
+    t.bigint "workspace_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["workspace_id"], name: "index_job_applications_on_workspace_id"
+  end
 
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
@@ -43,5 +56,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_23_115743) do
     t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
+  add_foreign_key "job_applications", "workspaces"
   add_foreign_key "workspaces", "users"
 end

@@ -10,6 +10,10 @@ An app that uses React JS for the front end and Ruby on Rails API for the backen
 - Ruby on Rails API
 
 # Functionality
-- Log In Using Devise JWT
-- CRUD Functionality
-- Drag and Drop Kanban Board Front End
+- Token-based authentication using devise and devise-jwt
+- Postgresql for the database
+- API only Ruby on Rails Project
+- Serialize JSON for output
+
+# Projects Board
+Visit the link to see the progress of this project: [Board](https://github.com/users/jocogum10/projects/3/views/1).
