@@ -55,7 +55,7 @@ RSpec.describe "Api::V1::Workspaces", type: :request do
   end
 
   # destroy
-  it "" do
+  it "return no content when successfully deleting a workspace" do
     delete api_v1_destroy_workspace_path(@workspace.id), headers: @auth_headers
     expect(response).to have_http_status(:no_content)
   end
