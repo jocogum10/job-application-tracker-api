@@ -24,12 +24,19 @@ RSpec.describe "Api::V1::JobApplications", type: :request do
   it "returns valid accessing the index and has valid token" do
     get api_v1_all_job_applications_path(@workspace.id), headers: @auth_headers
     expect(response).to have_http_status(:ok)
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:data][0][:type]).to eq('job_application')
+    expect(json[:data][0][:attributes][:title]).to eq(@job_application.title)
+    expect(json[:data][0][:relationships][:workspace][:data][:id]).to eq(@workspace.id.to_s)
   end
 
   # show
   it "returns valid when having token and accessing the show" do
     get api_v1_show_job_application_path(@workspace.id, @job_application.id), headers: @auth_headers
     expect(response).to have_http_status(:ok)
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:data][:type]).to eq('job_application')
+    expect(json[:data][:attributes][:title]).to eq(@job_application.title)
   end
 
   # create
@@ -46,6 +53,9 @@ RSpec.describe "Api::V1::JobApplications", type: :request do
     }, 
     headers: @auth_headers, as: :json
     expect(response).to have_http_status(:created)
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:data][:type]).to eq('job_application')
+    expect(json[:data][:attributes][:title]).to eq("test name")
   end
 
   # update
@@ -61,6 +71,9 @@ RSpec.describe "Api::V1::JobApplications", type: :request do
       }
     }, headers: @auth_headers, as: :json
     expect(response).to have_http_status(:accepted)
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:data][:type]).to eq('job_application')
+    expect(json[:data][:attributes][:title]).to eq("test name edited")
   end
 
   # destroy

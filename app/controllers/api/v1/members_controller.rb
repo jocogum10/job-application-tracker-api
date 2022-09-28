@@ -3,10 +3,8 @@ class Api::V1::MembersController < ApplicationController
 
   def show
     user = get_user_from_token
-    render json: {
-      message: "If you see this, you're in!",
-      user: user
-    }
+    options = { include: [:workspaces] }
+    render json: UserSerializer.new(user).serializable_hash.to_json, status: :ok
   end
 
   private

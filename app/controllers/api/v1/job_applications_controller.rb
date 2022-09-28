@@ -3,25 +3,21 @@ class Api::V1::JobApplicationsController < ApplicationController
   before_action :get_workspace
 
   def index
-    render json: {
-      job_applications: @workspace.job_application.all
-    }, status: :ok
+    job_apps = @workspace.job_application.all
+    options = { include: [:workspace]}
+    render json: JobApplicationSerializer.new(job_apps).serializable_hash.to_json, status: :ok
   end
 
   def show
-    render json: {
-      job_application: @workspace.job_application.find(params[:id])
-    }, status: :ok
+    job_app = @workspace.job_application.find(params[:id])
+    render json: JobApplicationSerializer.new(job_app).serializable_hash.to_json, status: :ok
   end
 
   def create
     job_application = @workspace.job_application.create(job_application_params)
 
     if job_application.save
-      render json: {
-        job_application: job_application,
-        message: "Successfully created a job application.",
-      }, status: :created
+      render json: JobApplicationSerializer.new(job_application).serializable_hash.to_json, status: :created
     else
       render json: {
         message: job_application.errors
@@ -32,10 +28,7 @@ class Api::V1::JobApplicationsController < ApplicationController
   def update
     job_application = @workspace.job_application.find(params[:id])
     if job_application.update(job_application_params)
-      render json: {
-        job_application: job_application,
-        message: "Successfully updated the workspace."
-      }, status: :accepted
+      render json: JobApplicationSerializer.new(job_application).serializable_hash.to_json, status: :accepted
     else
       render json: {
         message: job_application.errors

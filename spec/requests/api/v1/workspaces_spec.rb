@@ -23,12 +23,19 @@ RSpec.describe "Api::V1::Workspaces", type: :request do
   it "returns valid when having token and accessing the index" do
     get '/api/v1/workspaces', headers: @auth_headers
     expect(response).to have_http_status(:ok)
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:data][0][:type]).to eq('workspace')
+    expect(json[:data][0][:attributes][:name]).to eq(@workspace.name)
+    expect(json[:data][0][:relationships][:user][:data][:id]).to eq(@user.id.to_s)
   end
 
   # show
   it "returns valid when having token and accessing the show" do
     get api_v1_show_workspace_path(@workspace.id), headers: @auth_headers
     expect(response).to have_http_status(:ok)
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:data][:type]).to eq('workspace')
+    expect(json[:data][:attributes][:name]).to eq(@workspace.name)
   end
 
   # create
@@ -41,6 +48,9 @@ RSpec.describe "Api::V1::Workspaces", type: :request do
     }, 
     headers: @auth_headers, as: :json
     expect(response).to have_http_status(:created)
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:data][:type]).to eq('workspace')
+    expect(json[:data][:attributes][:name]).to eq("test name")
   end
 
   # update
@@ -52,6 +62,9 @@ RSpec.describe "Api::V1::Workspaces", type: :request do
       }
     }, headers: @auth_headers, as: :json
     expect(response).to have_http_status(:accepted)
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:data][:type]).to eq('workspace')
+    expect(json[:data][:attributes][:name]).to eq("test name edited")
   end
 
   # destroy
