@@ -36,7 +36,7 @@ $ rspec
 - [x] Token-based authentication using devise and devise-jwt
 - [x] API only configuration
 - [x] RSpec Tests
-- [x] Serialize JSON for output
+- [x] Serialize output JSON following the JSON:API specs
 - [ ] Reports
 
 # Projects Link
